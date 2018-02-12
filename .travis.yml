@@ -1,0 +1,32 @@
+language: bash
+services: docker
+
+branches:
+  only:
+    - master
+
+env:
+  - VERSION=0.4.0 LATEST=true
+
+before_script:
+  - env | sort
+  - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+  - cd ${VERSION}
+  - image="${DOCKERHUB_USERNAME}/minifi"
+  - toolkit_image="${DOCKERHUB_USERNAME}/minifi-toolkit"
+
+script:
+  - docker build --build-arg VERSION=${VERSION} -t "${image}:${VERSION}" .
+  - docker push "${image}:${VERSION}"
+  - |
+    if [ "$LATEST" == "true" ]; then
+      docker tag "${image}:${VERSION}" "${image}:latest"
+      docker push "${image}:latest" 
+    fi
+  - cd toolkit
+  - docker build --build-arg VERSION=${VERSION} -t "${toolkit_image}:${VERSION}" .
+  - docker push "${toolkit_image}:${VERSION}"
+
+
+after_script:
+  - docker images
