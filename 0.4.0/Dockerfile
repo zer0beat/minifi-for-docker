@@ -17,4 +17,4 @@ RUN set -x && \
 USER minifi
 WORKDIR ${MINIFI_HOME}
 
-CMD ["bin/minifi.sh","start"]
+CMD ["bin/minifi.sh","run"]
