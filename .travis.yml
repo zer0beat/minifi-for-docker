@@ -26,7 +26,11 @@ script:
   - cd toolkit
   - docker build --build-arg VERSION=${VERSION} -t "${toolkit_image}:${VERSION}" .
   - docker push "${toolkit_image}:${VERSION}"
-
+  - |
+    if [ "$LATEST" == "true" ]; then
+      docker tag "${toolkit_image}:${VERSION}" "${toolkit_image}:latest"
+      docker push "${toolkit_image}:latest" 
+    fi
 
 after_script:
   - docker images

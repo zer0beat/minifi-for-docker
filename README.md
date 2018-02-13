@@ -32,4 +32,4 @@ From your checkout directory:
 2. Run the image
 
         VERSION=0.4.0
-        docker run --rm -ti -v /path/to/data/:/data/ minifi:${VERSION} sh
+        docker run --rm -ti -v /path/to/data/:/data/ minifi-tookit:${VERSION} sh
